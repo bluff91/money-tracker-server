@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('express-async-errors')
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
@@ -10,13 +11,15 @@ const notFoundMiddleware = require('./middleware/not-found')
 
 
 
+
 app.use(express.json())
 
 app.use('/auth', authRouter)
 app.use('/tasks', taskRouter)
 
-app.use(errorHandlerMiddleware)
 app.use(notFoundMiddleware)
+app.use(errorHandlerMiddleware)
+
 
 const port = 5000 || process.env.PORT
 

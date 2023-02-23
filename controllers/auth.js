@@ -1,16 +1,31 @@
 const User = require('../models/User')
 const {StatusCodes} = require('http-status-codes')
+const BadRequestError = require('../errors/bad-request')
+const UnauthenticatedError = require("../errors/unauthenticated")
+const bcryptjs = require('bcryptjs')
 
+
+//validation is taken care of by mangoose
 const register = async (req, res) => {
-    const user = await User.create(req.body) 
+    const user = await User.create(req.body)
+    const generatedToken = user.generateToken()
+    res.status(StatusCodes.CREATED).json({user, generatedToken})
 
-    res.status(StatusCodes.CREATED).json({user})
 }
 
-
-
+//validation is built in the controller
 const login = async (req, res) => {
-    res.send("login route is ok")
+    const { name, email, password} = req.body
+    if (!name || !email || !password) {
+        throw new BadRequestError("Please provide valid credentials")
+    }
+    const user = await User.findOne({email})
+    const passCheck = await bcryptjs.compare(password, user.password)
+    if (!passCheck) {
+        throw new UnauthenticatedError("Access denied, incorrect password")
+    }
+    const generatedToken = user.generateToken()
+    res.status(StatusCodes.OK).json({user, token:generatedToken})
 }
 
 module.exports = {
