@@ -1,6 +1,8 @@
 
 
 
+
+
 const getAllTasks = async (req, res) => {
     res.send("get all tasks route is ok")
 }
@@ -27,4 +29,5 @@ module.exports = {
     postTask,
     updateTask,
     deleteTask
+
 }
