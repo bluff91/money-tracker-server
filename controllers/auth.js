@@ -10,7 +10,6 @@ const register = async (req, res) => {
     const user = await User.create(req.body)
     const generatedToken = user.generateToken()
     res.status(StatusCodes.CREATED).json({user, generatedToken})
-
 }
 
 //validation is built in the controller
@@ -19,7 +18,15 @@ const login = async (req, res) => {
     if (!name || !email || !password) {
         throw new BadRequestError("Please provide valid credentials")
     }
+    
+    
     const user = await User.findOne({email})
+    if (user.name !== name) {
+        throw new BadRequestError("Incorrect username")
+    }
+    if (!user) {
+        throw new BadRequestError(`User with email ${email} not found`)
+    }
     const passCheck = await bcryptjs.compare(password, user.password)
     if (!passCheck) {
         throw new UnauthenticatedError("Access denied, incorrect password")

@@ -1,10 +1,14 @@
-
-
+const Task = require('../models/Task')
+const { StatusCodes } = require('http-status-codes')
+const { BadRequestError, NotFoundError } = require('../errors')
 
 
 
 const getAllTasks = async (req, res) => {
-    res.send("get all tasks route is ok")
+    req.body.createdBy = req.user.displayName
+    const tasks = await Task.find({})
+    res.status(StatusCodes.OK).json(tasks)
+    // res.send("get all tasks route is ok")
 }
 
 const getTask = async (req, res) => {
@@ -12,7 +16,9 @@ const getTask = async (req, res) => {
 }
 
 const postTask = async (req, res) => {
-    res.send ("post a task is ok")
+    req.body.createdBy = req.user.displayName
+    const task = await Task.create(req.body)
+    res.status(StatusCodes.CREATED).json(task)
 }
 
 const updateTask = async (req, res) => {
