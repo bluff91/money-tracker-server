@@ -1,8 +1,9 @@
 // const CustomAPIError = require('../errors/custom-api')
 const errorHandlerMiddleware = (err, req, res, next) => {
   let customError = {
-    statusCode: err.statusCode,
-    message: err.message
+    message: err.message,
+    statusCode: err.statusCode || 500
+    
   }
   //duplicate email
   if(err && err.code === 11000) {

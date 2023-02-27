@@ -18,8 +18,6 @@ const login = async (req, res) => {
     if (!name || !email || !password) {
         throw new BadRequestError("Please provide valid credentials")
     }
-    
-    
     const user = await User.findOne({email})
     if (user.name !== name) {
         throw new BadRequestError("Incorrect username")
