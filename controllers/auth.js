@@ -14,7 +14,9 @@ const register = async (req, res) => {
 
 //validation is built in the controller
 const login = async (req, res) => {
+    console.log("PING")
     const { name, email, password} = req.body
+    console.log(`called with name:${name}, email: ${email}, password: ${password}`)
     if (!name || !email || !password) {
         throw new BadRequestError("Please provide valid credentials")
     }
