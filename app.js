@@ -30,9 +30,6 @@ app.use(express.json())
 app.use('/auth', authRouter)
 app.use('/tasks', taskMiddleware, taskRouter)
 
-app.get("/testingplm", (req, res) => {
-    res.status(200).json("asdada !@@@@")
-})
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)

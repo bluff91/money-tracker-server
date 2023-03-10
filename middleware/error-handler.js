@@ -8,7 +8,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   //duplicate email
   if(err && err.code === 11000) {
     customError.statusCode = 400
-    customError.message = `Error, duplicate value for ${Object.keys(err.keyValue)}`
+    customError.message = `${Object.keys(err.keyValue)} is already in use`
   }
   //cast error
   if(err && err.name === 'CastError') {
